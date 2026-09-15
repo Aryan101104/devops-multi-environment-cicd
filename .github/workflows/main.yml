@@ -11,8 +11,66 @@ permissions:
   id-token: write
 
 jobs:
-  deploy:
+
+  dev:
+    name: DEV
     runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Development validation
+        run: |
+          echo "Starting DEV stage"
+          echo "Environment: DEV"
+          echo "Running development checks"
+          test -f index.html
+          echo "DEV stage completed successfully"
+
+
+  test:
+    name: TEST
+    runs-on: ubuntu-latest
+    needs: dev
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Test validation
+        run: |
+          echo "Starting TEST stage"
+          echo "Environment: TEST"
+          echo "Running tests"
+          test -f index.html
+          echo "HTML file validation passed"
+          echo "TEST stage completed successfully"
+
+
+  prod:
+    name: PROD
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Production validation
+        run: |
+          echo "Starting PROD stage"
+          echo "Environment: PROD"
+          echo "Running production validation"
+          test -f index.html
+          echo "Production validation passed"
+          echo "PROD stage completed successfully"
+
+
+  deploy:
+    name: DEPLOY
+    runs-on: ubuntu-latest
+    needs: prod
 
     environment:
       name: github-pages
