@@ -1,0 +1,22 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  dev:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Development stage
+        run: |
+          echo "Starting DEV stage"
+          echo "Environment: DEV"
+          echo "Running development checks"
+          test -f index.html
+          echo "DEV stage completed successfully"
