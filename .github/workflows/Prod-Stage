@@ -1,0 +1,43 @@
+name: Production Stage
+
+on:
+  push:
+    branches:
+      - prod
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  prod:
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Production validation
+        run: |
+          echo "Starting PROD stage"
+          echo "Environment: PROD"
+          echo "Running production validation"
+          test -f index.html
+          echo "Production validation passed"
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: .
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
