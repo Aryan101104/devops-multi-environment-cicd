@@ -1,0 +1,23 @@
+name: Test Stage
+
+on:
+  push:
+    branches:
+      - test
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Test stage
+        run: |
+          echo "Starting TEST stage"
+          echo "Environment: TEST"
+          echo "Running tests"
+          test -f index.html
+          echo "HTML file validation passed"
+          echo "TEST stage completed successfully"
